@@ -65,8 +65,8 @@ public class BertramCodingChallenge {
 			}
 		}
 		
-		//now that the order is defined --> iterate through, decrementing the number
-		//each person needs to pay until none are left
+		//print out the total number of days for an even rotation and how many
+		//days each person is expected to pay
 		System.out.println("This rotation operates on a " + days + " day schedule.");
 		for(Coworker worker : coworkers) {
 			System.out.println(worker);
@@ -76,31 +76,29 @@ public class BertramCodingChallenge {
 		System.out.println();
 		System.out.println("Press enter to print the schedule: ");
 		scanner.nextLine();
-			//if there are greater than 10 days per rotation, attempt to rotate between people
-			//in 10 day increments as fair as possible
-			int trackDays = 1;
-			int trackTotal = days;
-			//working with an infinite loop -- things arent't tracking correctly
-		    //each value stops tracking after 176
-			
-			//taking new percentage each time-- this should not change
-			while(trackTotal > 0) {
-				for(int i = 0; i < NUM_COWORKERS; i++) {
-					double percentage = coworkers[i].getPercentage();
-					percentage = percentage * 10; 
-					for(int j = 0; j < (int) Math.round(percentage); j++) {
-						if(coworkers[i].getDaysToPay() > 0) {
-							System.out.println("Day " + trackDays + ": " + coworkers[i].getName());
+		int trackDays = 1;
+		int trackTotal = days;
+		
+		//prints the entire schedule 10 days at a time using percentages of the total cost
+		//to create a roughly fair pay cycle with any rounding error accounted for at the
+		//end
+		while(trackTotal > 0) {
+			for(int i = 0; i < NUM_COWORKERS; i++) {
+				double percentage = coworkers[i].getPercentage();
+				percentage = percentage * 10; 
+				for(int j = 0; j < (int) Math.round(percentage); j++) {
+					if(coworkers[i].getDaysToPay() > 0) {
+						System.out.println("Day " + trackDays + ": " + coworkers[i].getName());
 						coworkers[i].setDaysToPay(coworkers[i].getDaysToPay()-1);
-							trackDays++;
-							trackTotal--;
-						}
+						trackDays++;
+						trackTotal--;
 					}
 				}
-				System.out.println("Press enter to print next: ");
-				scanner.nextLine();
 			}
-		
+			System.out.println("Press enter to print next: ");
+			scanner.nextLine();
+			}
+		scanner.close();
 	}
 	
 	
